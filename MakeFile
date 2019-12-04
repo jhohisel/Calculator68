@@ -1,0 +1,24 @@
+# 	You can define {SymOptions} as "-sym on" or "-sym off" for use with SADE
+# 	We also recommend requiring prototypes for all functions
+
+SymOptions	=	-sym Full
+SymOpt		=	{SymOptions}
+COptions	=	-w 17 -proto strict {SymOpt} -D OLDROUTINELOCATIONS=0
+MrCOptions	=	{SymOpt} -D OLDROUTINELOCATIONS=0
+
+# Dummy rule for building all of the samples 
+
+all Ä Calculator
+
+#######################################################################
+# Build instructions and dependencies for the Calculator application
+#	
+sampObjs	= Calculator.c.o
+
+sampLibs	= "{Libraries}"MacRuntime.o ¶
+			  "{Libraries}"Interface.o
+		
+Calculator		ÄÄ {sampObjs} Calculator.r
+	Link -o {Targ} {sampObjs} {sampLibs} {SymOptions}
+	Rez -rd -o {Targ} Calculator.r -append
+	SetFile {Targ} -t APPL -c 'MOOS' -a B
