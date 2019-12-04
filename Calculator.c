@@ -1,3 +1,17 @@
+/*------------------------------------------------------------------------------
+#
+#	Macintosh Developer Technical Support
+#
+#	Simple Color QuickDraw Animation Sample Application -- Soon to be 68k Classic Mac OS Calculator application!
+#
+#	TubeTest
+#
+#	TubeTest.c	-	C Source
+#
+#	Copyright © 1988, 1994-95 Apple Computer, Inc.
+#	All rights reserved.
+*/
+
 #include <Windows.h>
 #include <Types.h>
 #include <Processes.h>
@@ -20,7 +34,7 @@
 WindowPtr   globalWindow,
             whichWindow;
 Rect        dragRect;
-Boolean     doneFlag;
+Boolean     quitFlag;
 EventRecord	myEvent;
 OSErr       error;
 SysEnvRec	  theWorld;
@@ -33,15 +47,12 @@ void ShowAboutMeDialog(void);
 void DoCommand(long int mResult);
 
 void main(void) {
-  /*
-	**	Test the computer to be sure we can do color.  
-	**	If not we would crash, which would be bad.  
-	**	If we can't run, just beep and exit.
-	*/
 	error = SysEnvirons(1, &theWorld);
+
+	// Ensure color is supported
 	if (theWorld.hasColorQD == false) {
 		SysBeep (50);
-		ExitToShell();							/* If no color QD, we must leave. */
+		ExitToShell();
 	};
 
 	InitGraf(&qdg.thePort);
@@ -53,7 +64,7 @@ void main(void) {
 	InitCursor();
 
 	SetRect(&dragRect, 4, 24, qdg.screenBits.bounds.right - 4, qdg.screenBits.bounds.bottom - 4);
-	doneFlag = false;							/* flag to detect when Quit command is chosen */
+	quitFlag = false;
 
 	/*
 	**	Open the color window.
@@ -128,7 +139,7 @@ void main(void) {
 		*/
 		// if (tubeCheck) ShiftyColors();
 		
-	} while (!doneFlag);
+	} while (!quitFlag);
 
 	/*
 	**	clean up after palette manager, 
@@ -194,7 +205,7 @@ void DoCommand(long int mResult)
 
 		case fileId:
 			if (theItem == quitItem)
-				doneFlag = true;
+				quitFlag = true;
 			break;
 
 		case editId:
